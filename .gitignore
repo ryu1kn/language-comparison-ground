@@ -1,3 +1,4 @@
+/test/tmp
 /topics/**/*
 !/topics/**/*/
 !/topics/hello-world/sample/*
