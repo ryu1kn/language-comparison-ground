@@ -5,10 +5,11 @@
 * Hello World to stdout
 * File I/O
 * Text processing
-* Command line arguments
+* Parsing command line arguments
 * JSON serialisation/deserialisation
 * HTTP Client
 * HTTP Server
+* RDB integration
 * AWS SDK
 * Mutli-thread processing
 
