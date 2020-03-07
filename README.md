@@ -6,6 +6,7 @@
 * File I/O
 * Text processing
 * Parsing command line arguments
+* Environment Variables
 * JSON serialisation/deserialisation
 * HTTP Client
 * HTTP Server
