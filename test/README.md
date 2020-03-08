@@ -2,6 +2,8 @@
 
 ## Usage
 
+Run tests
+
 ```sh
-$ java -jar test-0.1.0-standalone.jar [args]
+lein test
 ```

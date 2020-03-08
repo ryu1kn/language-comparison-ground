@@ -4,6 +4,7 @@
 
 * Hello World to stdout
 * File I/O
+* Execute shell command
 * Text processing
 * Parsing command line arguments
 * Environment Variables
