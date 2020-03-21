@@ -13,19 +13,25 @@
 (defn list-files [dirpath]
   (map #(str dirpath "/" %) (seq (.list (clojure.java.io/file dirpath)))))
 
+(defn make-command [& parts] (str/join " " parts))
+
+(defn abs-path [relpath] (str proj-root-path "/" relpath))
+
 (defn lang-name [dirpath] (last (str/split dirpath #"/")))
 
 (io/make-parents (str proj-root-path "tmp/whatever"))
 
 (deftest hello-world
-  (doseq [file (list-files "../topics/hello-world")]
-    (testing (lang-name file)
-      (is (= "Hello World!\n" (exec-test file "bash run.sh"))))))
+  (doseq [testdir (list-files "../topics/hello-world")]
+    (testing (lang-name testdir)
+      (is (= "Hello World!\n" (exec-test testdir "bash run.sh"))))))
 
 (deftest file-io
-  (doseq [file (list-files "../topics/file-io")
-          out-file [(str proj-root-path "/tmp/file-io-output-" (lang-name file) ".txt")]]
-    (testing (lang-name file)
-      (is (= "Hello World!\n" (do
-        (exec-test file (str "bash run.sh" " " (.getAbsolutePath (io/file "file-io-input.txt")) " " out-file))
-        (slurp out-file)))))))
+  (doseq [testdir (list-files "../topics/file-io")]
+    (let [out-file (abs-path (str "tmp/file-io-output-" (lang-name testdir) ".txt"))
+          in-file (abs-path "file-io-input.txt")]
+      (testing (lang-name testdir)
+        (is (= "Hello World!\n"
+          (do
+            (exec-test testdir (make-command "bash" "run.sh" in-file out-file))
+            (slurp out-file))))))))
