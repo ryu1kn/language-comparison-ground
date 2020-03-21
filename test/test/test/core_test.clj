@@ -8,12 +8,10 @@
 (def proj-root-path (System/getProperty "user.dir"))
 
 (defn exec-test [dirpath sh-cmd]
-  (:out (with-sh-dir dirpath (sh "bash" "-c" sh-cmd))))
+  (:out (with-sh-dir dirpath (apply sh sh-cmd))))
 
 (defn list-files [dirpath]
   (map #(str dirpath "/" %) (seq (.list (clojure.java.io/file dirpath)))))
-
-(defn make-command [& parts] (str/join " " parts))
 
 (defn abs-path [relpath] (str proj-root-path "/" relpath))
 
@@ -24,7 +22,7 @@
 (deftest hello-world
   (doseq [testdir (list-files "../topics/hello-world")]
     (testing (lang-name testdir)
-      (is (= "Hello World!\n" (exec-test testdir "bash run.sh"))))))
+      (is (= "Hello World!\n" (exec-test testdir ["bash" "run.sh"]))))))
 
 (deftest file-io
   (doseq [testdir (list-files "../topics/file-io")]
@@ -33,10 +31,17 @@
       (testing (lang-name testdir)
         (is (= "Hello World!\n"
           (do
-            (exec-test testdir (make-command "bash" "run.sh" in-file out-file))
+            (exec-test testdir ["bash" "run.sh" in-file out-file])
             (slurp out-file))))))))
 
 (deftest external-command
   (doseq [testdir (list-files "../topics/external-command")]
     (testing (lang-name testdir)
-      (is (= "Hello World!\n" (exec-test testdir "bash run.sh"))))))
+      (is (= "Hello World!\n" (exec-test testdir ["bash" "run.sh"]))))))
+
+(deftest json
+  (doseq [testdir (list-files "../topics/json")]
+    (let [in-file (abs-path "json-input.json")
+          expected-out-file (abs-path "json-output.json")]
+      (testing (lang-name testdir)
+        (is (= (slurp expected-out-file) (exec-test testdir ["bash" "run.sh" in-file])))))))
