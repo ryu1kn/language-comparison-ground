@@ -35,3 +35,8 @@
           (do
             (exec-test testdir (make-command "bash" "run.sh" in-file out-file))
             (slurp out-file))))))))
+
+(deftest external-command
+  (doseq [testdir (list-files "../topics/external-command")]
+    (testing (lang-name testdir)
+      (is (= "Hello World!\n" (exec-test testdir "bash run.sh"))))))
