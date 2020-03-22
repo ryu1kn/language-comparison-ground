@@ -7,9 +7,6 @@
 
 (def proj-root-path (System/getProperty "user.dir"))
 
-(defn exec-test [dirpath sh-cmd]
-  (:out (with-sh-dir dirpath (apply sh sh-cmd))))
-
 (defn sh' [& args]
   (let [[cmd opt-list] (split-with string? args)
         opt-map (apply hash-map opt-list)]
@@ -31,7 +28,7 @@
 (deftest hello-world
   (doseq [testdir (list-files "../topics/hello-world")]
     (testing (lang-name testdir)
-      (is (= "Hello World!\n" (exec-test testdir ["bash" "run.sh"]))))))
+      (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir )))))))
 
 (deftest file-io
   (doseq [testdir (list-files "../topics/file-io")]
@@ -40,20 +37,20 @@
       (testing (lang-name testdir)
         (is (= "Hello World!\n"
           (do
-            (exec-test testdir ["bash" "run.sh" in-file out-file])
+            (:out (sh' "bash" "run.sh" in-file out-file :dir testdir))
             (slurp out-file))))))))
 
 (deftest external-command
   (doseq [testdir (list-files "../topics/external-command")]
     (testing (lang-name testdir)
-      (is (= "Hello World!\n" (exec-test testdir ["bash" "run.sh"]))))))
+      (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir)))))))
 
 (deftest json
   (doseq [testdir (list-files "../topics/json")]
     (let [in-file (abs-path "json-input.json")
           expected-out-file (abs-path "json-output.json")]
       (testing (lang-name testdir)
-        (is (= (slurp expected-out-file) (exec-test testdir ["bash" "run.sh" in-file])))))))
+        (is (= (slurp expected-out-file) (:out (sh' "bash" "run.sh" in-file :dir testdir))))))))
 
 (deftest environment-variable
   (doseq [testdir (list-files "../topics/environment-variable")]
