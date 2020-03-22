@@ -10,6 +10,15 @@
 (defn exec-test [dirpath sh-cmd]
   (:out (with-sh-dir dirpath (apply sh sh-cmd))))
 
+(defn sh' [& args]
+  (let [[cmd opt-list] (split-with string? args)
+        opt-map (apply hash-map opt-list)]
+    (apply sh
+      (concat
+        cmd
+        [:dir (:dir opt-map)]
+        [:env (into {} [(System/getenv) (:env opt-map)])]))))
+
 (defn list-files [dirpath]
   (map #(str dirpath "/" %) (seq (.list (clojure.java.io/file dirpath)))))
 
@@ -45,3 +54,8 @@
           expected-out-file (abs-path "json-output.json")]
       (testing (lang-name testdir)
         (is (= (slurp expected-out-file) (exec-test testdir ["bash" "run.sh" in-file])))))))
+
+(deftest environment-variable
+  (doseq [testdir (list-files "../topics/environment-variable")]
+    (testing (lang-name testdir)
+      (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir :env {"TEST_MESSAGE" "Hello"})))))))
