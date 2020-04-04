@@ -1,3 +1,5 @@
+![CI](https://github.com/ryu1kn/language-comparison-ground/workflows/CI/badge.svg)
+
 # Language Comparison Ground
 
 ## Topics
