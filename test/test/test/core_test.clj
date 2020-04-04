@@ -23,7 +23,7 @@
 
 (defn lang-name [dirpath] (last (str/split dirpath #"/")))
 
-(io/make-parents (str proj-root-path "tmp/whatever"))
+(io/make-parents (abs-path "tmp/whatever"))
 
 (deftest hello-world
   (doseq [testdir (list-files "../solutions/hello-world")]
