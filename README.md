@@ -2,7 +2,7 @@
 
 ## Topics
 
-* Hello World to stdout
+* Hello World
 * File I/O
 * Execute external command
 * Text processing
@@ -13,7 +13,7 @@
 * HTTP Server
 * RDB integration
 * AWS SDK
-* Mutli-thread processing
+* Multi-thread processing
 
 ## Usage
 

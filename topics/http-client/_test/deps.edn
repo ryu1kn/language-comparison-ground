@@ -1,0 +1,4 @@
+; https://www.clojure.org/guides/deps_and_cli
+{:deps
+  {ring/ring-core {:mvn/version "1.8.0"}
+   ring/ring-jetty-adapter {:mvn/version "1.8.0"}}}
