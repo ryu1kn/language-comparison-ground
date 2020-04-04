@@ -1,0 +1,3 @@
+; https://www.clojure.org/guides/deps_and_cli
+{:deps
+  {clj-http {:mvn/version "3.10.0"}}}
