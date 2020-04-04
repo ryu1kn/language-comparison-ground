@@ -26,12 +26,12 @@
 (io/make-parents (str proj-root-path "tmp/whatever"))
 
 (deftest hello-world
-  (doseq [testdir (list-files "../topics/hello-world")]
+  (doseq [testdir (list-files "../solutions/hello-world")]
     (testing (lang-name testdir)
       (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir )))))))
 
 (deftest file-io
-  (doseq [testdir (list-files "../topics/file-io")]
+  (doseq [testdir (list-files "../solutions/file-io")]
     (let [out-file (abs-path (str "tmp/file-io-output-" (lang-name testdir) ".txt"))
           in-file (abs-path "file-io-input.txt")]
       (testing (lang-name testdir)
@@ -41,18 +41,18 @@
             (slurp out-file))))))))
 
 (deftest external-command
-  (doseq [testdir (list-files "../topics/external-command")]
+  (doseq [testdir (list-files "../solutions/external-command")]
     (testing (lang-name testdir)
       (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir)))))))
 
 (deftest json
-  (doseq [testdir (list-files "../topics/json")]
+  (doseq [testdir (list-files "../solutions/json")]
     (let [in-file (abs-path "json-input.json")
           expected-out-file (abs-path "json-output.json")]
       (testing (lang-name testdir)
         (is (= (slurp expected-out-file) (:out (sh' "bash" "run.sh" in-file :dir testdir))))))))
 
 (deftest environment-variable
-  (doseq [testdir (list-files "../topics/environment-variable")]
+  (doseq [testdir (list-files "../solutions/environment-variable")]
     (testing (lang-name testdir)
       (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir :env {"TEST_MESSAGE" "Hello"})))))))
