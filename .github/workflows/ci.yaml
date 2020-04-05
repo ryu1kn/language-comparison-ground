@@ -14,7 +14,7 @@ jobs:
       - name: Test
         uses: ./.github/actions/test
         with:
-          args: bash -c "pwd && ls"
+          args: bash -c "cd test && lein test"
 
   hello_world_job:
     runs-on: ubuntu-latest
