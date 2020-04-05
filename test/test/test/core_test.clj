@@ -16,6 +16,10 @@
         [:dir (:dir opt-map)]
         [:env (into {} [(System/getenv) (:env opt-map)])]))))
 
+(defn sh-out [& args]
+  (let [result (apply sh' args)]
+    (if (= 0 (:exit result)) result (throw (Exception. (:err result))))))
+
 (defn list-files [dirpath]
   (map #(str dirpath "/" %) (seq (.list (clojure.java.io/file dirpath)))))
 
@@ -28,7 +32,7 @@
 (deftest hello-world
   (doseq [testdir (list-files "../solutions/hello-world")]
     (testing (lang-name testdir)
-      (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir )))))))
+      (is (= "Hello World!\n" (:out (sh-out "bash" "run.sh" :dir testdir )))))))
 
 (deftest file-io
   (doseq [testdir (list-files "../solutions/file-io")]
@@ -37,22 +41,22 @@
       (testing (lang-name testdir)
         (is (= "Hello World!\n"
           (do
-            (:out (sh' "bash" "run.sh" in-file out-file :dir testdir))
+            (:out (sh-out "bash" "run.sh" in-file out-file :dir testdir))
             (slurp out-file))))))))
 
 (deftest external-command
   (doseq [testdir (list-files "../solutions/external-command")]
     (testing (lang-name testdir)
-      (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir)))))))
+      (is (= "Hello World!\n" (:out (sh-out "bash" "run.sh" :dir testdir)))))))
 
 (deftest json
   (doseq [testdir (list-files "../solutions/json")]
     (let [in-file (abs-path "json-input.json")
           expected-out-file (abs-path "json-output.json")]
       (testing (lang-name testdir)
-        (is (= (slurp expected-out-file) (:out (sh' "bash" "run.sh" in-file :dir testdir))))))))
+        (is (= (slurp expected-out-file) (:out (sh-out "bash" "run.sh" in-file :dir testdir))))))))
 
 (deftest environment-variable
   (doseq [testdir (list-files "../solutions/environment-variable")]
     (testing (lang-name testdir)
-      (is (= "Hello World!\n" (:out (sh' "bash" "run.sh" :dir testdir :env {"TEST_MESSAGE" "Hello"})))))))
+      (is (= "Hello World!\n" (:out (sh-out "bash" "run.sh" :dir testdir :env {"TEST_MESSAGE" "Hello"})))))))
