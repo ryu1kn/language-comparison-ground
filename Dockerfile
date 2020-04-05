@@ -1,8 +1,14 @@
-# Container image that runs your code
-FROM alpine:3.10
+FROM clojure:openjdk-8-tools-deps
 
-# Copies your code file from your action repository to the filesystem path `/` of the container
-COPY entrypoint.sh /entrypoint.sh
+COPY ./ /build/
 
-# Code file to execute when the docker container starts up (`entrypoint.sh`)
-ENTRYPOINT ["/entrypoint.sh"]
+WORKDIR /build/test
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+    && apt-get update -y \
+    && apt-get install -y jq nodejs \
+    \
+    && wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein \
+    && chmod +x lein \
+    && mv lein /usr/local/bin \
+    && lein
