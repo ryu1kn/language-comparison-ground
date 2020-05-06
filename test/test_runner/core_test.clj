@@ -4,6 +4,10 @@
 
 (def problem-dir "problems")
 
-(deftest a-test
-  (testing "Find problem directories"
-    (is (= '("problems/hello-world") (target-dirs problem-dir)))))
+(deftest test
+  (testing "Find language directories"
+    (is (= '("problems/hello-world/bash") (target-dirs problem-dir))))
+
+  (testing "Find test runner directories"
+    (is (= "problems/hello-world/_test" (test-dir "problems/hello-world/bash"))))
+  )
