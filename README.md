@@ -1,44 +1,29 @@
 # test-runner
 
-FIXME: description
+Test runner will run all the exercise for all the language solutions.
 
-## Installation
+Exercise directory structure looks like this:
 
-Download from http://example.com/FIXME.
+    problems/
+      hello-world/
+        _test/
+          README.md     # `hello-world` exercise description
+          test.sh       # Execute a test for a given language directory. e.g. `clojure`
+        clojure/
+          run.sh        # Contents in each language directory is
+                        # depends on how test.sh wants to run a test
+        javascript/
 
-## Usage
+The test for the above `hello-world` exercise is invoked as follows:
 
-FIXME: explanation
+```sh
+# current directory is `problems/hello-world/_test`.
+# The test can assume that there is `../clojure` directory.
+bash test.sh clojure
+```
 
-    $ java -jar test-runner-0.1.0-standalone.jar [args]
+`test.sh` needs to:
 
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2020 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+* When the test passed, exit with 0.
+* When the test failed, exit with non-0.
+* When the test failed, provide the failure reason to `stderr`.
