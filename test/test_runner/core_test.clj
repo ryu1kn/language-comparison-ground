@@ -3,7 +3,7 @@
             [test-runner.core :refer :all]))
 
 (def problem-dir "problems")
-(defn fake-sh [] ())
+(defn fake-sh [& command] [command])
 
 (deftest test
   (testing "Find language directories"
@@ -14,5 +14,5 @@
 
   (testing "Run a test against a language directory found"
     (let [commands ((test-all problem-dir) fake-sh)]
-      (is (= commands [{:dir "problems/hello-world/_test" :cmd "bash test.sh clojure"}]))))
+      (is (= commands [["bash" "test.sh" "clojure" :dir "problems/hello-world/_test"]]))))
   )

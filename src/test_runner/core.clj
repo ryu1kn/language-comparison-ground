@@ -13,6 +13,8 @@
   (-> lang-dir (s/split #"/") (drop-last) (concat ["_test"]) (#(s/join "/" %))))
 
 (defn test-all [problem-dir]
-  (fn [sh] [{:dir "problems/hello-world/_test" :cmd "bash test.sh clojure"}]))
+  (fn [sh]
+    (let [command ["bash" "test.sh" "clojure" :dir "problems/hello-world/_test"]]
+      (apply sh command))))
 
 (defn -main [& args] (println "Hello, World!"))
