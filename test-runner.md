@@ -1,4 +1,4 @@
-# test-runner
+# test-runner design
 
 Test runner will run all the exercise for all the language solutions.
 

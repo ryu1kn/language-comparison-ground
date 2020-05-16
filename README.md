@@ -19,11 +19,13 @@
 
 ## Usage
 
-For example, to write code that does Hello World:
+For the usage of the first iteration implementation, go to [iteration-0/README.md](iteration-0/README.md).
 
-1. Create a directory under `solutions/hello-world`, for example `javascript`.
-1. Provide `run.sh` under the directory created in the previous step.
-1. To run all the tests, check [test/README.md](test/README.md)
+For the current implementation, see it's doc ([test-runner.md](./test-runner.md)):
+
+```sh
+lein all-test
+```
 
 ## References
 

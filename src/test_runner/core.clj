@@ -26,7 +26,7 @@
           commands (map run-test lang-dirs)]
       (map #(apply sh %) commands))))
 
-(defn -main [& args]
-  (let [test-runner (test-all "fixtures/problems")]
+(defn -main [problems-root]
+  (let [test-runner (test-all problems-root)]
     (do (doall (test-runner sh))
         (shutdown-agents))))

@@ -6,4 +6,5 @@
   :dependencies [[org.clojure/clojure "1.10.1"]]
   :main ^:skip-aot test-runner.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}}
+  :aliases {"all-test" ["run" "fixtures/problems"]})
