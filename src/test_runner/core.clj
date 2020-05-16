@@ -16,9 +16,8 @@
 (defn test-dir-path [lang-dir] (-> lang-dir (dirname) (str test-dir)))
 
 (defn run-test [problem-root-dir]
-  (let [dir1 (test-dir-path problem-root-dir)
-        dir2 (basename problem-root-dir)]
-    ["bash" "test.sh" dir2 :dir dir1]))
+  (let [solution-dir (basename problem-root-dir)]
+    ["bash" "test.sh" solution-dir :dir (test-dir-path problem-root-dir)]))
 
 (defn test-all [problem-dir]
   (fn [sh]
