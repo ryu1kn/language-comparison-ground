@@ -1,5 +1,6 @@
 (ns test-runner.core
   (:require [clojure.java.io :as io]
+            [clojure.java.shell :refer [sh]]
             [clojure.string :as s])
   (:gen-class))
 
@@ -23,6 +24,8 @@
   (fn [sh]
     (let [lang-dirs (target-dirs problem-dir)
           commands (map run-test lang-dirs)]
-      (apply sh commands))))
+      (for [command commands] (apply sh command)))))
 
-(defn -main [& args] (println "Hello, World!"))
+(defn -main [& args]
+  (let [test-runner (test-all "problems")]
+    (print (test-runner sh))))
