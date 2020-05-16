@@ -21,8 +21,13 @@
   (let [solution-dir (basename problem-root-dir)]
     ["bash" "test.sh" solution-dir :dir (test-dir-path problem-root-dir)]))
 
-(defn aggregate-result [sh-outs]
-  {:exit (reduce #(+ %1 (:exit %2)) 0 sh-outs)})
+(defn add-sh-out [out1 out2]
+  (let [{exit-1 :exit err-1 :err} out1
+        {exit-2 :exit err-2 :err} out2]
+    {:exit (+ exit-1 exit-2)
+     :err (->> [err-1 err-2] (remove empty?) (s/join "\n\n"))}))
+
+(defn aggregate-result [sh-outs] (reduce add-sh-out {:exit 0 :err ""} sh-outs))
 
 (defn test-all [problem-dir]
   (fn [sh]

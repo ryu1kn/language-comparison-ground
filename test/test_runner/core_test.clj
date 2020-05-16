@@ -13,9 +13,9 @@
         ["bash" "test.sh" "clojure" :dir (problem-rel-path "hello-world/_test")]
         ["bash" "test.sh" "bash" :dir (problem-rel-path "hello-world/_test")]]))))
 
-  (testing "Programme choose 1 for exit status when any test failed"
-    (let [shell-outputs [{:exit 0} {:exit 1}]]
-      (is (= (aggregate-result shell-outputs) {:exit 1}))))
+  (testing "Accumulates exit status of all test commands"
+    (let [shell-outputs [{:exit 0 :err ""} {:exit 1 :err "foo"} {:exit 1 :err "bar"}]]
+      (is (= (aggregate-result shell-outputs) {:exit 2 :err "foo\n\nbar"}))))
 
   ;(testing "Programme exits with 1 when any test failed"
   ;  (let [runner (test-all problem-dir)
