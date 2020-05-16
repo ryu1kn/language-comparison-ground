@@ -1,5 +1,5 @@
 /.idea
-/test/tmp
+/iteration-0/tmp
 
 # Clojure
 .cpcache

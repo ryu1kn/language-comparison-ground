@@ -27,6 +27,6 @@
       (map #(apply sh %) commands))))
 
 (defn -main [& args]
-  (let [test-runner (test-all "problems")]
+  (let [test-runner (test-all "fixtures/problems")]
     (do (doall (test-runner sh))
         (shutdown-agents))))
