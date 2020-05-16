@@ -24,8 +24,9 @@
   (fn [sh]
     (let [lang-dirs (target-dirs problem-dir)
           commands (map run-test lang-dirs)]
-      (for [command commands] (apply sh command)))))
+      (map #(apply sh %) commands))))
 
 (defn -main [& args]
   (let [test-runner (test-all "problems")]
-    (print (test-runner sh))))
+    (do (doall (test-runner sh))
+        (shutdown-agents))))
