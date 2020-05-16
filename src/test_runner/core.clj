@@ -3,6 +3,7 @@
             [clojure.string :as s])
   (:gen-class))
 
+(def test-dir "/_test")
 (defn dirname [path] (-> path (io/file) (.getParent)))
 (defn basename [path] (-> path (io/file) (.getName)))
 
@@ -10,12 +11,12 @@
   (map #(str dirpath "/" %) (seq (.list (io/file dirpath)))))
 
 (defn target-dirs [dirpath]
-  (mapcat list-files (list-files dirpath)))
+  (remove #(s/ends-with? % test-dir) (mapcat list-files (list-files dirpath))))
 
-(defn test-dir [lang-dir] (-> lang-dir (dirname) (str "/_test")))
+(defn test-dir-path [lang-dir] (-> lang-dir (dirname) (str test-dir)))
 
 (defn run-test [problem-root-dir]
-  (let [dir1 (test-dir problem-root-dir)
+  (let [dir1 (test-dir-path problem-root-dir)
         dir2 (basename problem-root-dir)]
     ["bash" "test.sh" dir2 :dir dir1]))
 
