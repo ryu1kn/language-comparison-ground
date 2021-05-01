@@ -33,9 +33,9 @@
   (fn [sh]
     (let [lang-dirs (target-dirs problem-dir)
           commands (map run-test lang-dirs)]
-      (map #(apply sh %) commands))))
+      (aggregate-result (map #(apply sh %) commands)))))
 
 (defn -main [problems-root]
   (let [test-runner (test-all problems-root)]
-    (do (doall (test-runner sh))
+    (do (println (test-runner sh))
         (shutdown-agents))))

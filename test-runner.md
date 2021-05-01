@@ -10,7 +10,7 @@ Exercise directory structure looks like this:
           README.md     # `hello-world` exercise description
           test.sh       # Execute a test for a given language directory. e.g. `clojure`
         clojure/
-          run.sh        # Contents in each language directory is
+          run.sh        # Contents in each language directory
                         # depends on how test.sh wants to run a test
         javascript/
 
