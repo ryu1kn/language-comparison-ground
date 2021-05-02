@@ -7,14 +7,14 @@
 (def test-dir "/_test")
 (defn sys-exit [status] (System/exit status))
 
-(defn target-dirs [dirpath]
+(defn collect-lang-dir-paths [dirpath]
   (remove #(s/ends-with? % test-dir) (mapcat list-files (list-files dirpath))))
 
 (defn test-dir-path [lang-dir] (-> lang-dir (dirname) (str test-dir)))
 
-(defn run-test [problem-root-dir]
-  (let [solution-dir (basename problem-root-dir)]
-    ["bash" "test.sh" solution-dir :dir (test-dir-path problem-root-dir)]))
+(defn build-test-command [lang-dir-path]
+  (let [lang-dir-name (basename lang-dir-path)]
+    ["bash" "test.sh" lang-dir-name :dir (test-dir-path lang-dir-path)]))
 
 (defn add-sh-out
   [{exit-1 :exit err-1 :err}
@@ -26,8 +26,8 @@
 
 (defn test-all [problem-dir]
   (fn [sh]
-    (let [lang-dirs (target-dirs problem-dir)
-          commands (map run-test lang-dirs)]
+    (let [lang-dir-paths (collect-lang-dir-paths problem-dir)
+          commands (map build-test-command lang-dir-paths)]
       (aggregate-result (map #(apply sh %) commands)))))
 
 (defn finish-test [{:keys [exit err]}]
