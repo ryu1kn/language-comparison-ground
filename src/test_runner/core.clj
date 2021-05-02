@@ -35,7 +35,10 @@
           commands (map run-test lang-dirs)]
       (aggregate-result (map #(apply sh %) commands)))))
 
+(defn finish-test [{exit-code :exit message :err}]
+  (do (println message)
+      (sys-exit exit-code)))
+
 (defn -main [problems-root]
   (let [test-runner (test-all problems-root)]
-    (do (println (test-runner sh))
-        (shutdown-agents))))
+    (finish-test (test-runner sh))))

@@ -9,16 +9,17 @@ assert() {
     fi
 }
 
-readonly message="$(lein run fixtures/problems-fail)"
-readonly exit_code="$?"
+set +e
+message="$(lein run fixtures/problems-fail)"
+exit_code="$?"
+set -e
 
 assert "$message" "$(cat << EOF
-{:exit 2, :err clojure test failed
+clojure test failed
 
 
 bash test failed
-}
 EOF
 )"
 
-assert "$exit_code" 0
+assert "$exit_code" 2
