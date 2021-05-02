@@ -1,16 +1,11 @@
 (ns test-runner.core
-  (:require [clojure.java.io :as io]
-            [clojure.java.shell :refer [sh]]
-            [clojure.string :as s])
+  (:require [clojure.java.shell :refer [sh]]
+            [clojure.string :as s]
+            [test-runner.file :refer [dirname basename list-files]])
   (:gen-class))
 
 (def test-dir "/_test")
-(defn dirname [path] (-> path (io/file) (.getParent)))
-(defn basename [path] (-> path (io/file) (.getName)))
 (defn sys-exit [status] (System/exit status))
-
-(defn list-files [dirpath]
-  (map #(str dirpath "/" %) (seq (.list (io/file dirpath)))))
 
 (defn target-dirs [dirpath]
   (remove #(s/ends-with? % test-dir) (mapcat list-files (list-files dirpath))))
