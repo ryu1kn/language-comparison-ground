@@ -3,11 +3,22 @@
 set -euo pipefail
 
 assert() {
-    [[ "$1" != "$2" ]] && { echo "Expected \"$2\", but got \"$1\"."; exit 1; }
+    if [[ "$1" != "$2" ]] ; then
+        echo "Expected \"$2\", but got \"$1\"."
+        exit 1
+    fi
 }
 
-readonly message="$(lein all-test)"
+readonly message="$(lein run fixtures/problems-fail)"
 readonly exit_code="$?"
 
-assert "$message" foo
-assert "$exit_code" 1
+assert "$message" "$(cat << EOF
+{:exit 2, :err clojure test failed
+
+
+bash test failed
+}
+EOF
+)"
+
+assert "$exit_code" 0
